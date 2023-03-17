@@ -29,11 +29,11 @@ export default async function (req, res) {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: generatePrompt(animal),
-      temperature: 0.6,
+      temperature: 1,
       // max_tokens: 1000
     });
     console.log(completion.data.choices)
-    res.status(200).json({ result: completion.data.choices.reduce((acc, curr) => `${acc} ${curr.text}`, '') });
+    res.status(200).json({ result: completion.data.choices.reduce((acc, curr) => `${acc} ${curr.text.replace('Deck', '')}`, '') });
   } catch (error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
@@ -53,15 +53,18 @@ export default async function (req, res) {
 function generatePrompt(animal) {
   const capitalizedAnimal =
     animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Come up with a name for a Pokemon TCG Deck based off the card.
+  return `Provide an epic name with a pun for a Pokemon Card Deck based off given the deck's Pokemon names.
 
-  Card: Xerneas
-  Name: Rainbow Road
+  Cards: Espeon, Garbodor
+  Name: Espewing Garbage
 
-  Card: Regigigas
-  Name: Reginalds
+  Cards: Palkia, Inteleon
+  Name: Mind the Spatial Gap
 
-  Card: ${capitalizedAnimal}
+  Cards: Regigigas, Regirock, Regice, Registeel
+  Name: Regi-Guardians of the Galaxy
+
+  Cards: ${capitalizedAnimal}
   Name: 
   `;
 }
