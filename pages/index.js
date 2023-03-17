@@ -1,14 +1,18 @@
 import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
+import { RingLoader } from "react-spinners";
+import { Text, Box, ChakraProvider, ScaleFade, Fade, Flex, Stack } from "@chakra-ui/react";
 
 export default function Home() {
   const [animalInput, setAnimalInput] = useState("");
   const [result, setResult] = useState();
+  const [loading, setLoading] = useState();
 
   async function onSubmit(event) {
     event.preventDefault();
     try {
+      setLoading(true);
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
@@ -27,35 +31,43 @@ export default function Home() {
       // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div>
-      <Head>
-        <title>OpenAI Quickstart</title>
-        <link rel="icon" href="/dog.png" />
-      </Head>
-
+    <ChakraProvider>
       <main className={styles.main}>
-        {/* <img src="/dog.png" className={styles.icon} />
-        <h3>Name my pet</h3> */}
-        <form onSubmit={onSubmit}>
-          <input
-            type="text"
-            name="animal"
-            placeholder="Enter a prompt"
-            value={animalInput}
-            onChange={(e) => setAnimalInput(e.target.value)}
-          />
-          <input type="submit" value="Generate name" />
-        </form>
-        {result && (
-          <>
-            <div className={styles.result}>{result}</div>
-          </>
-        )}
+        <Fade in>
+          <Stack paddingX={6}>
+            <Text>Enter a comma-separated list of Pokemon names to create your next deck name.</Text>
+            <Text width='60vw' paddingBottom={2}>Made by Jared Grimes. Powered by ChatGPT.</Text>
+            <form onSubmit={onSubmit}>
+              <input
+                type="text"
+                name="animal"
+                placeholder="Enter a prompt"
+                value={animalInput}
+                onChange={(e) => setAnimalInput(e.target.value)}
+              />
+              <input type="submit" value="Generate name" />
+            </form>
+            <Flex paddingY={4} height='100px' transitionTimingFunction={'ease'} transitionDuration={2}>
+              <Box position={'absolute'} left='16px'>
+                <Fade initialScale={0.9} in={loading}>
+                  <RingLoader color='#36d7b7' />
+                </Fade>
+              </Box>
+              <ScaleFade initialScale={0.9} in={!loading}>
+                <Box paddingY={4}>
+                  <div className={styles.result}>{result}</div>
+                </Box>
+              </ScaleFade>
+            </Flex>
+          </Stack>
+        </Fade>
       </main>
-    </div>
+    </ChakraProvider>
   );
 }

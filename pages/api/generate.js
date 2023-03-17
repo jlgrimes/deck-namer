@@ -32,7 +32,6 @@ export default async function (req, res) {
       temperature: 1,
       // max_tokens: 1000
     });
-    console.log(completion.data.choices)
     res.status(200).json({ result: completion.data.choices.reduce((acc, curr) => `${acc} ${curr.text.replace('Deck', '')}`, '') });
   } catch (error) {
     // Consider adjusting the error handling logic for your use case
@@ -53,17 +52,20 @@ export default async function (req, res) {
 function generatePrompt(animal) {
   const capitalizedAnimal =
     animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Provide an epic name with a pun for a Pokemon Card Deck based off given the deck's Pokemon names.
+  return `Give a name with a pun for a Pokemon Card Deck based off given the deck's Pokemon names.
 
+  Cards: Zoroark, Lycanroc
+  Name: Paw Patrol
+  Cards: Tapu Bulu, Vikavolt
+  Name: Bulu Gang
   Cards: Espeon, Garbodor
   Name: Espewing Garbage
-
   Cards: Palkia, Inteleon
   Name: Mind the Spatial Gap
-
   Cards: Regigigas, Regirock, Regice, Registeel
   Name: Regi-Guardians of the Galaxy
-
+  Cards: Stonjourner
+  Name: Rolling Stones
   Cards: ${capitalizedAnimal}
   Name: 
   `;
