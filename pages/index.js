@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
 import { RingLoader } from "react-spinners";
-import { Text, Box, ChakraProvider, ScaleFade, Fade, Flex, Stack } from "@chakra-ui/react";
+import { Text, Box, ChakraProvider, ScaleFade, Fade, Flex, Stack, Heading } from "@chakra-ui/react";
 
 export default function Home() {
   const [animalInput, setAnimalInput] = useState("");
@@ -41,13 +41,14 @@ export default function Home() {
       <main className={styles.main}>
         <Fade in>
           <Stack paddingX={6}>
+            <Heading color='gray.700' paddingBottom={4}>deck namer</Heading>
             <Text>Enter a comma-separated list of Pokemon names to create your next deck name.</Text>
             <Text width='60vw' paddingBottom={2}>Made by Jared Grimes. Powered by ChatGPT.</Text>
             <form onSubmit={onSubmit}>
               <input
                 type="text"
                 name="animal"
-                placeholder="Enter a prompt"
+                placeholder="Pokemon - ex. Lugia, Archeops"
                 value={animalInput}
                 onChange={(e) => setAnimalInput(e.target.value)}
               />
