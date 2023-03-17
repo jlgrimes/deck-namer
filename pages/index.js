@@ -54,8 +54,8 @@ export default function Home() {
               />
               <input type="submit" value="Generate name" />
             </form>
-            <Flex paddingY={4} height='100px' transitionTimingFunction={'ease'} transitionDuration={2}>
-              <Box position={'absolute'} left='16px'>
+            <Flex paddingY={4} height='100px' transitionTimingFunction={'ease'} transitionDuration={2} position='relative'>
+              <Box position={'absolute'} left='0'>
                 <Fade initialScale={0.9} in={loading}>
                   <RingLoader color='#36d7b7' />
                 </Fade>
